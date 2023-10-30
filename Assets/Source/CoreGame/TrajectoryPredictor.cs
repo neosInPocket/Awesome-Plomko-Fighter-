@@ -35,11 +35,7 @@ public class TrajectoryPredictor : MonoBehaviour
 		
 		if (distance < maxDistance)
 		{
-			if (currentDirectionMultiplier == -1 && maskDistance > trajectoryLength)
-			{
-				mask.transform.Translate(-transform.right * Mathf.Abs(maskDistance - trajectoryLength), Space.World);
-				return;
-			}
+			if (currentDirectionMultiplier == -1 && maskDistance > trajectoryLength) return;
 			
 			currentDirectionMultiplier = -1;
 			mask.transform.Translate(-transform.right * (trajectoryLength - distance) * trajectorySpeed, Space.World);
@@ -47,16 +43,17 @@ public class TrajectoryPredictor : MonoBehaviour
 		
 		if (distance > maxDistance)
 		{
-			if (currentDirectionMultiplier == 1 && maskDistance > trajectoryLength)
-			{
-				mask.transform.Translate(transform.right * Mathf.Abs(maskDistance - trajectoryLength), Space.World);
-				return;
-			}
+			if (currentDirectionMultiplier == 1 && maskDistance > trajectoryLength) return;
 			
 			currentDirectionMultiplier = 1;
 			mask.transform.Translate(transform.right * distance * trajectorySpeed, Space.World);
 		}
 		maxDistance = distance;
+	}
+	
+	public void HideTrajectory()
+	{
+		mask.transform.localPosition = Vector2.zero;
 	}
 	
 	public void SetRotation(Vector2 direction)

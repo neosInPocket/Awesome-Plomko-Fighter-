@@ -32,7 +32,7 @@ public class PlayerMovementController : MonoBehaviour
 	
 	private void OnFingerUpHandler(Finger finger)
 	{
-		
+		trajectoryPredictor.HideTrajectory();
 	}
 	
 	public void DisablePlayerControls()
