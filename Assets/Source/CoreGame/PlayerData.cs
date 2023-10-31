@@ -12,6 +12,7 @@ public class PlayerData
 	public int ImpulseUpgrade => impulseUpgrade;
 	
 	public Action<bool> DamageTaken;
+	public Action<int> EnemyKilled;
 	
 	public PlayerData()
 	{
@@ -34,5 +35,10 @@ public class PlayerData
 		}
 		
 		lifes--;
+	}
+	
+	public void KillEnemy()
+	{
+		EnemyKilled?.Invoke(2);
 	}
 }

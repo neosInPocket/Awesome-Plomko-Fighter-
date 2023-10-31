@@ -9,11 +9,18 @@ public class TrajectoryPredictor : MonoBehaviour
 	private float maxDistance;
 	private float trajectoryLength;
 	private int currentDirectionMultiplier;
+	public Vector2 CurrentDirection;
 	
 	private void Start()
 	{
 		trajectoryLength = mask.bounds.size.x / 2;
 	}
+	
+	private void Update()
+	{
+		transform.right = CurrentDirection;
+	}
+	
 	
 	public void SetFingerStartPosition(Vector2 position)
 	{
@@ -29,6 +36,7 @@ public class TrajectoryPredictor : MonoBehaviour
 		var distance = Vector2.Distance(worldPos, fingerStartPosition);
 		
 		var direction = (worldPos - fingerStartPosition).normalized;
+		CurrentDirection = direction;
 		SetRotation(direction);
 		
 		var maskDistance = Vector2.Distance(Vector2.zero, mask.transform.localPosition);

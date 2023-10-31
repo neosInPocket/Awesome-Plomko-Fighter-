@@ -4,10 +4,15 @@ using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class PlayerMovementController : MonoBehaviour
 {
+	[SerializeField] private Rigidbody2D rigid;
 	[SerializeField] private TrajectoryPredictor trajectoryPredictor;
+	[SerializeField] private float timeScale;
+	[SerializeField] private float impulseMagnitude;
+	private float defaultDeltaTime;
 	
 	private void Start()
 	{
+		defaultDeltaTime = Time.fixedDeltaTime;
 		EnablePlayerControls();
 	}
 	
@@ -22,6 +27,8 @@ public class PlayerMovementController : MonoBehaviour
 	
 	private void OnFingerDownHandler(Finger finger)
 	{
+		Time.timeScale = timeScale;
+		Time.fixedDeltaTime = 0.001f;
 		trajectoryPredictor.SetFingerStartPosition(finger.screenPosition);
 	}
 	
@@ -32,7 +39,15 @@ public class PlayerMovementController : MonoBehaviour
 	
 	private void OnFingerUpHandler(Finger finger)
 	{
+		Time.timeScale = 1;
+		Time.fixedDeltaTime = defaultDeltaTime;
 		trajectoryPredictor.HideTrajectory();
+		SetPlayerImpulse(trajectoryPredictor.CurrentDirection * impulseMagnitude);
+	}
+	
+	private void SetPlayerImpulse(Vector2 force)
+	{
+		rigid.velocity = force * impulseMagnitude;
 	}
 	
 	public void DisablePlayerControls()

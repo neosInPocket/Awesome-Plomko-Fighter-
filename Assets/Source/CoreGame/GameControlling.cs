@@ -7,11 +7,28 @@ public class GameControlling : MonoBehaviour
 	private void Start()
 	{
 		player.Initialize();
-		player.Subscribe(PlayerDamageHandler);
+		player.SubscribeDamageEvent(PlayerDamageHandler);
+		player.SubscribeEnemyKillEvent(PlayerEnemyKilledHandler);
 	}
 	
 	private void PlayerDamageHandler(bool isPlayerDead)
 	{
 		Debug.Log("Player damage taken, is he dead?" + isPlayerDead);
+	}
+	
+	private void PlayerEnemyKilledHandler(int coinsToAdd)
+	{
+		
+	}
+	
+	private void OnDestroy()
+	{
+		UnsubscribePlayer();
+	}
+	
+	private void UnsubscribePlayer()
+	{
+		player.UnSubscribeDamageEvent(PlayerDamageHandler);
+		player.UnSubscribeEnemyKillEvent(PlayerEnemyKilledHandler);
 	}
 }

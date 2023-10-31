@@ -18,9 +18,14 @@ public class PlayerController : MonoBehaviour
 		player.DamageTaken += PlayerDamageTakenHandler;
 	}
 	
-	public void Subscribe(Action<bool> subscriber)
+	public void SubscribeDamageEvent(Action<bool> subscriber)
 	{
 		player.DamageTaken += subscriber;
+	}
+	
+	public void SubscribeEnemyKillEvent(Action<int> subscriber)
+	{
+		player.EnemyKilled += subscriber;
 	}
 	
 	private void PlayerDamageTakenHandler(bool isDead)
@@ -51,6 +56,17 @@ public class PlayerController : MonoBehaviour
 		{
 			
 		}
+		
 		yield return new WaitForSeconds(.01f);
+	}
+	
+	public void UnSubscribeDamageEvent(Action<bool> subscriber)
+	{
+		player.DamageTaken -= subscriber;
+	}
+	
+	public void UnSubscribeEnemyKillEvent(Action<int> subscriber)
+	{
+		player.EnemyKilled -= subscriber;
 	}
 }
