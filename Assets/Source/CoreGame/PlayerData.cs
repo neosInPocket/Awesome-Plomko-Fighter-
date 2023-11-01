@@ -15,30 +15,22 @@ public class PlayerData
 	}
 	public int ImpulseUpgrade => impulseUpgrade;
 	
-	public Action<bool> DamageTaken;
+	public Action<int> DamageTaken;
 	public Action<int> EnemyKilled;
 	
 	public PlayerData()
 	{
 		var save = new GamePreferences();
 		
-		lifes = save.PlayerMaximumLifesUpgrades;
+		//lifes = save.PlayerMaximumLifesUpgrades;
+		lifes = 2;
 		impulseUpgrade = save.PlayerImpulseUpgrade;
 	}
 	
 	public void TakeDamage()
 	{
-		if (lifes - 1 == 0)
-		{
-			DamageTaken?.Invoke(true);
-			return;
-		}
-		else
-		{
-			DamageTaken?.Invoke(false);
-		}
-		
 		lifes--;
+		DamageTaken?.Invoke(lifes);
 	}
 	
 	public void KillEnemy()

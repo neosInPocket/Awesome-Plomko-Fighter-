@@ -1,53 +1,118 @@
 using Unity.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameControlling : MonoBehaviour
 {
 	[SerializeField] private PlayerController player;
 	[SerializeField] private GameUIController gameUIController;
+	[SerializeField] private PlayerMovementController playerMovementController;
+	[SerializeField] private Spawner spawner;
+	[SerializeField] private UITutorialScreen uITutorialScreen;
+	[SerializeField] private UICountDown uICountDown;
 	private int level;
-	private float reward;
-	private float currentProgress = 0;
+	private int levelReward;
+	private int currentProgress = 0;
+	private int maxProgress;
 	private GamePreferences gamePreferences;
-	public float CurrentProgress => currentProgress;
-	public float Reward => reward;
+	public int CurrentProgress => currentProgress;
+	public int LevelReward => levelReward;
+	public int MaxProgress => maxProgress;
 	
 	private void Start()
 	{
 		gamePreferences = new GamePreferences();
+		RestartGame();
 	}
 	
 	public void RestartGame()
 	{
 		level = gamePreferences.PlayerLevelSave;
-		reward = 2 * Mathf.Log(level * level) + 2;
+		maxProgress = (int)(5 * Mathf.Log(level * level) + 2);
+		levelReward = (int)(7 * Mathf.Log(level * level) + 20);
 		currentProgress = 0;
 		
-		player.Initialize();
-		player.SubscribeDamageEvent(PlayerDamageHandler);
-		player.SubscribeEnemyKillEvent(PlayerEnemyKilledHandler);
-		player.SubscribeDamageEvent(gameUIController.PlayerDamageHandler);
-		player.SubscribeEnemyKillEvent(gameUIController.PlayerEnemyKilledHandler);
+		if (gamePreferences.IsTutorialRequired)
+		{
+			gamePreferences.SetTutorialRequired(false);
+			uITutorialScreen.OnTutorialEnded += OnTutorialEndHandler;
+		}
+		else
+		{
+			OnTutorialEndHandler();
+		}
 	}
 	
-	private void PlayerDamageHandler(bool isPlayerDead)
+	private void OnTutorialEndHandler()
 	{
-		if (isPlayerDead)
+		uITutorialScreen.OnTutorialEnded -= OnTutorialEndHandler;
+		uICountDown.CountDownEnded += OnCountDownEndedHandler;
+		uICountDown.Play();
+	}
+	
+	private void OnCountDownEndedHandler()
+	{
+		uICountDown.CountDownEnded -= OnCountDownEndedHandler;
+		InitializePlayer();
+		
+		gameUIController.PlayerDamageHandler(player.Player.Lifes);
+		gameUIController.PlayerEnemyKilledHandler(0);
+		gameUIController.SetLevelText(level);
+		
+		spawner.Enable();
+		spawner.Spawn();
+	}
+	
+	private void InitializePlayer()
+	{
+		player.StopAllCoroutines();
+		player.Initialize();
+		playerMovementController.EnablePlayerControls();
+		player.IsInvincible = false;
+		player.transform.position = Vector2.zero;
+		player.TrailRenderer.Clear();
+		player.Rigid.velocity = Vector2.zero;
+		
+		player.SubscribeDamageEvent(PlayerDamageHandler);
+		player.SubscribeEnemyKillEvent(PlayerEnemyKilledHandler);
+	}
+	
+	private void PlayerDamageHandler(int currentLifes)
+	{
+		if (currentLifes == 0)
 		{
-			UnsubscribePlayer();
+			DisablePlayer();
+			gameUIController.AppearGameResultScreen(true);
 		}
+		
+		gameUIController.PlayerDamageHandler(currentLifes);
+		gameUIController.PlayerEnemyKilledHandler((float)CurrentProgress / (float)MaxProgress);
 	}
 	
 	private void PlayerEnemyKilledHandler(int coinsToAdd)
 	{
-		if (currentProgress + coinsToAdd > reward)
+		if (currentProgress + coinsToAdd >= maxProgress)
 		{
-			UnsubscribePlayer();
+			currentProgress = maxProgress;
+			gamePreferences.IncreaseLevelSave();
+			DisablePlayer();
+			gameUIController.AppearGameResultScreen(false);
 		}
 		else
 		{
 			currentProgress += coinsToAdd;
 		}
+		
+		gameUIController.PlayerEnemyKilledHandler((float)CurrentProgress / (float)MaxProgress);
+	}
+	
+	private void DisablePlayer()
+	{
+		spawner.Disable();
+		playerMovementController.DisablePlayerControls();
+		playerMovementController.SetDefaultTimeScale();
+		spawner.PopAllEnemies();
+		UnsubscribePlayer();
 	}
 	
 	private void OnDestroy()
@@ -59,7 +124,5 @@ public class GameControlling : MonoBehaviour
 	{
 		player.UnSubscribeDamageEvent(PlayerDamageHandler);
 		player.UnSubscribeEnemyKillEvent(PlayerEnemyKilledHandler);
-		player.UnSubscribeDamageEvent(gameUIController.PlayerDamageHandler);
-		player.UnSubscribeEnemyKillEvent(gameUIController.PlayerEnemyKilledHandler);
 	}
 }

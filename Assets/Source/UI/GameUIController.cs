@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
 
 public class GameUIController : MonoBehaviour
@@ -8,18 +7,36 @@ public class GameUIController : MonoBehaviour
 	[SerializeField] private GameStatusController statusController;
 	[SerializeField] private UIGameResult uIGameResult;
 	
-	public void PlayerDamageHandler(bool isPlayerDead)
+	
+	public void PlayerDamageHandler(int currentLifes)
 	{
-		
+		statusController.RefreshLifes(currentLifes);
 	}
 	
-	public void PlayerEnemyKilledHandler(int coinsToAdd)
+	public void PlayerEnemyKilledHandler(float fillValue)
 	{
-		if (gameControlling.CurrentProgress + coinsToAdd > gameControlling.Reward)
+		if (fillValue == 1f)
 		{
-			uIGameResult.Appear(false, gameControlling.Reward);
+			
 		}
 		
-		statusController.RefreshStatus(gameControlling.CurrentProgress / gameControlling.Reward);
+		statusController.RefreshStatus(fillValue);
+	}
+	
+	public void SetLevelText(int level)
+	{
+		statusController.SetLevel(level);
+	}
+	
+	public void AppearGameResultScreen(bool isLose)
+	{
+		if (!isLose)
+		{
+			uIGameResult.Appear(false, gameControlling.LevelReward);
+		}
+		else
+		{
+			uIGameResult.Appear(true);
+		}
 	}
 }

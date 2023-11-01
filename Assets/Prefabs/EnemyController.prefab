@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3288172658446343165}
   - component: {fileID: 9150188646580584559}
-  - component: {fileID: 5144405578655687015}
   - component: {fileID: 2676854094103898429}
+  - component: {fileID: 4173219167630337590}
   m_Layer: 0
   m_Name: Spike
   m_TagString: Untagged
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 7026665922120632617}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.392, z: 0}
+  m_LocalPosition: {x: 0, y: 0.431, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -80,14 +80,26 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 0.3, y: 0.3}
+  m_Size: {x: 0.4, y: 0.4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!60 &5144405578655687015
-PolygonCollider2D:
+--- !u!114 &2676854094103898429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7026665922120632617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71b52b554c811d041a08f6b010a2b2fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!61 &4173219167630337590
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -115,37 +127,22 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.0012145042, y: 0.060724735}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.28866667}
     oldSize: {x: 1, y: 1}
-    newSize: {x: 0.3, y: 0.3}
+    newSize: {x: 0.4, y: 0.4}
     adaptiveTilingThreshold: 0.5
     drawMode: 1
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0, y: 0.17796731}
-      - {x: -0.15100765, y: -0.08835715}
-      - {x: 0.15307236, y: -0.08835715}
-  m_UseDelaunayMesh: 0
---- !u!114 &2676854094103898429
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7026665922120632617}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71b52b554c811d041a08f6b010a2b2fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  serializedVersion: 2
+  m_Size: {x: 0.40485382, y: 0.3538413}
+  m_EdgeRadius: 0
 --- !u!1 &7784570833729372223
 GameObject:
   m_ObjectHideFlags: 0
@@ -427,7 +424,7 @@ MonoBehaviour:
   trailRenderer: {fileID: 102052926416420543}
   spike: {fileID: 2676854094103898429}
   circleCollider: {fileID: 3393379774557570833}
-  explosionEffect: {fileID: 1929937877619348, guid: f7a6773b67fd1564a821ce57107db558, type: 3}
+  explosionEffect: {fileID: 143964, guid: 09d9de58ef3bf5444ac94afa0e6013cb, type: 3}
   spawnEffect: {fileID: 107336, guid: 3547e5e490f502041ae6e8a59042e4bd, type: 3}
   enemyMovementController: {fileID: 4110572717745125658}
 --- !u!114 &4110572717745125658
@@ -444,4 +441,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigid: {fileID: -4608468497076658381}
   maximumSpeed: 1
-  rotateSpeed: 0.01
+  rotateSpeed: 0.05

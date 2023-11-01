@@ -9,6 +9,7 @@ public class EnemyMovementController : MonoBehaviour
 	[SerializeField] float rotateSpeed;
 	public Transform Target { get; set; }
 	private float rotationMultiplier;
+	public Rigidbody2D Rigid => rigid;
 	
 	private void Update()
 	{

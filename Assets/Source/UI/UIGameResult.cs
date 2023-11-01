@@ -1,27 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UIGameResult : MonoBehaviour
 {
 	[SerializeField] private TMP_Text restartButtonText;
 	[SerializeField] private TMP_Text resultText;
 	[SerializeField] private TMP_Text coinsAmount;
+	[SerializeField] private GameControlling gameControlling;
 	
-	public void Appear(bool isLose, float coinsAdded = 0)
+	public void Appear(bool isLose, int coinsAdded = 0)
 	{
-		RefreshResultInfo(isLose);
+		RefreshResultInfo(isLose, coinsAdded);
 		gameObject.SetActive(true);
 	}
 	
 	public void Hide()
 	{
+		gameControlling.RestartGame();
 		gameObject.SetActive(false);
 	}
 	
-	private void RefreshResultInfo(bool isLose, float coinsAdded = 0)
+	private void RefreshResultInfo(bool isLose, int coinsAdded)
 	{
 		if (isLose)
 		{

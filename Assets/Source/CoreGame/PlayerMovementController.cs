@@ -10,16 +10,16 @@ public class PlayerMovementController : MonoBehaviour
 	[SerializeField] private float impulseMagnitude;
 	private float defaultDeltaTime;
 	
+	
 	private void Start()
 	{
+		EnhancedTouchSupport.Enable();
+		TouchSimulation.Enable();
 		defaultDeltaTime = Time.fixedDeltaTime;
-		EnablePlayerControls();
 	}
 	
 	public void EnablePlayerControls()
 	{
-		EnhancedTouchSupport.Enable();
-		TouchSimulation.Enable();
 		Touch.onFingerDown += OnFingerDownHandler;
 		Touch.onFingerMove += OnFingerMoveHandler;
 		Touch.onFingerUp += OnFingerUpHandler;
@@ -52,8 +52,6 @@ public class PlayerMovementController : MonoBehaviour
 	
 	public void DisablePlayerControls()
 	{
-		EnhancedTouchSupport.Disable();
-		TouchSimulation.Disable();
 		Touch.onFingerDown -= OnFingerDownHandler;
 		Touch.onFingerMove -= OnFingerMoveHandler;
 		Touch.onFingerUp -= OnFingerUpHandler;
@@ -62,5 +60,11 @@ public class PlayerMovementController : MonoBehaviour
 	private void OnDestroy()
 	{
 		DisablePlayerControls();	
+	}
+	
+	public void SetDefaultTimeScale()
+	{
+		Time.timeScale = 1;
+		Time.fixedDeltaTime = defaultDeltaTime;
 	}
 }

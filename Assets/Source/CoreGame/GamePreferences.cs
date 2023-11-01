@@ -20,6 +20,8 @@ public class GamePreferences
 	public GamePreferences()
 	{
 		LoadPreferences();
+		playerLevelSave = 1;
+		SavePreferences();
 	}
 	
 	private void SavePreferences()
@@ -65,9 +67,9 @@ public class GamePreferences
 		SavePreferences();
 	}
 	
-	public void SetLevelSave(int value)
+	public void IncreaseLevelSave()
 	{
-		playerLevelSave = value;
+		playerLevelSave++;
 		SavePreferences();
 	}
 	
@@ -80,6 +82,12 @@ public class GamePreferences
 	public void SetImpulseUpgrade(int value)
 	{
 		playerImpulseUpgrade = value;
+		SavePreferences();
+	}
+	
+	public void SetTutorialRequired(bool value)
+	{
+		isTutorialRequired = value;
 		SavePreferences();
 	}
 }

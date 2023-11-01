@@ -10,13 +10,6 @@ public class GameStatusController : MonoBehaviour
 	[SerializeField] private GameStatusBar gameStatusBar;
 	[SerializeField] private TMP_Text levelText;
 	
-	private void Start()
-	{
-		GamePreferences preferences = new GamePreferences();
-		RefreshLifes(preferences.PlayerMaximumLifesUpgrades);
-		SetLevel(preferences.PlayerLevelSave);
-	}
-	
 	public void RefreshStatus(float fullValue)
 	{
 		gameStatusBar.RefreshFill(fullValue);

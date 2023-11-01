@@ -24,9 +24,13 @@ public class EnemyController : MonoBehaviour
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
 		var player = collision.gameObject.GetComponent<PlayerController>();
+		var spike = collision.otherCollider.gameObject.GetComponent<EnemySpike>();
 		
+		if (spike) return;
 		if (player != null && !isDead)
 		{
+			enemyMovementController.Rigid.angularVelocity = 0;
+			enemyMovementController.Rigid.velocity = Vector2.zero;
 			Dead?.Invoke(this);
 			isDead = true;
 			player.Player.KillEnemy();

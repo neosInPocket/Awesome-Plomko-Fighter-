@@ -10,13 +10,9 @@ public class Spawner : MonoBehaviour
 	[SerializeField] float spawnDelta;
 	[SerializeField] float spawnBoundsDelta;
 	private List<EnemyController> currentEnemies = new List<EnemyController>();
+	private bool isEnabled;
 	
-	private void Start()
-	{
-		Spawn();
-	}
-	
-	private void Spawn()
+	public void Spawn()
 	{
 		currentEnemies.Clear();
 		var screenSize = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
@@ -26,14 +22,14 @@ public class Spawner : MonoBehaviour
 		float ySpawnPos = 0;
 		Quaternion rotation = Quaternion.identity;
 			
-		if (player.transform.position.y >= 0)
+		if (player.transform.position.y > 0)
 		{
 			ySpawnPos = -screenSize.y + enemyPrefab.SP.bounds.size.y / 2;
 			rotation = Quaternion.Euler(0, 0, 0);
 		}
 		else
 		{
-			ySpawnPos = screenSize.y - enemyPrefab.SP.bounds.size.y / 2;
+			ySpawnPos = screenSize.y - enemyPrefab.SP.bounds.size.y / 2 - 0.15f * screenSize.y;
 			rotation = Quaternion.Euler(0, 0, 180);
 		}
 		
@@ -71,9 +67,29 @@ public class Spawner : MonoBehaviour
 		enemyController.Dead -= OnEnemyDeadHandler;
 		currentEnemies.Remove(enemyController);
 		
-		if (currentEnemies.Count == 0)
+		if (currentEnemies.Count == 0 && enabled)
 		{
 			Spawn();
 		}
+	}
+	
+	public void PopAllEnemies()
+	{
+		foreach (var enemy in currentEnemies)
+		{
+			enemy.TakeDamage();
+		}
+		
+		currentEnemies.Clear();
+	}
+	
+	public void Enable()
+	{
+		isEnabled = true;
+	}
+	
+	public void Disable()
+	{
+		isEnabled = false;
 	}
 }
