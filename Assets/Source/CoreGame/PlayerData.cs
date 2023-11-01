@@ -8,7 +8,11 @@ public class PlayerData
 {
 	private int lifes;
 	private int impulseUpgrade;
-	public int Lifes => lifes;
+	public int Lifes 
+	{
+		get => lifes;
+		set => lifes = value;
+	}
 	public int ImpulseUpgrade => impulseUpgrade;
 	
 	public Action<bool> DamageTaken;

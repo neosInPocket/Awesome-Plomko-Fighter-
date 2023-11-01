@@ -15,7 +15,6 @@ public class GameBorders : MonoBehaviour
 		
 		top.transform.position = new Vector2(0, screenBorders.y + top.SpriteRenderer.bounds.size.y / 2);
 		top.SpriteRenderer.size = new Vector2(screenBorders.x * 2, top.SpriteRenderer.bounds.size.y);
-		top.gameObject.SetActive(false);
 		
 		bottom.transform.position = new Vector2(0, - screenBorders.y - bottom.SpriteRenderer.bounds.size.y / 2);
 		bottom.SpriteRenderer.size = new Vector2(screenBorders.x * 2, bottom.SpriteRenderer.bounds.size.y);

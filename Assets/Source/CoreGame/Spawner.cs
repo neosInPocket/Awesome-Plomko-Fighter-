@@ -5,28 +5,14 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-	[SerializeField] private CameraController cameraController;
-	[SerializeField] private GameBorders borders;
 	[SerializeField] EnemyController enemyPrefab;
 	[SerializeField] Transform player;
 	[SerializeField] float spawnDelta;
 	[SerializeField] float spawnBoundsDelta;
-	
-	private float PlayerPosition => player.position.y;
-	private float lastSpawnedPosition;
-	private bool isFight;
 	private List<EnemyController> currentEnemies = new List<EnemyController>();
 	
 	private void Start()
 	{
-		var screenSize = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
-		lastSpawnedPosition = 3 * screenSize.y / 4;
-	}
-	
-	private void Update()
-	{
-		if (isFight) return;
-		
 		Spawn();
 	}
 	
@@ -36,13 +22,30 @@ public class Spawner : MonoBehaviour
 		var screenSize = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
 		
 		var randomNumber = Random.Range(0, 2);
+		
+		float ySpawnPos = 0;
+		Quaternion rotation = Quaternion.identity;
+			
+		if (player.transform.position.y >= 0)
+		{
+			ySpawnPos = -screenSize.y + enemyPrefab.SP.bounds.size.y / 2;
+			rotation = Quaternion.Euler(0, 0, 0);
+		}
+		else
+		{
+			ySpawnPos = screenSize.y - enemyPrefab.SP.bounds.size.y / 2;
+			rotation = Quaternion.Euler(0, 0, 180);
+		}
+		
 		if (randomNumber < 1)
 		{
-			var leftSpawnPosition = new Vector2(-screenSize.x + enemyPrefab.SP.bounds.size.x / 2 + spawnBoundsDelta, lastSpawnedPosition);
-			var rightSpawnPosition = new Vector2(screenSize.x - enemyPrefab.SP.bounds.size.x / 2 - spawnBoundsDelta, lastSpawnedPosition);
+			var leftSpawnPosition = new Vector2(-screenSize.x + enemyPrefab.SP.bounds.size.x / 2 + spawnBoundsDelta, ySpawnPos);
+			var rightSpawnPosition = new Vector2(screenSize.x - enemyPrefab.SP.bounds.size.x / 2 - spawnBoundsDelta, ySpawnPos);
 			var left = Instantiate(enemyPrefab, leftSpawnPosition, enemyPrefab.transform.rotation, transform);
+			left.transform.rotation = rotation;
 			left.EnemyMovementController.Target = player;
 			var right = Instantiate(enemyPrefab, rightSpawnPosition, enemyPrefab.transform.rotation, transform);
+			right.transform.rotation = rotation;
 			right.EnemyMovementController.Target = player;
 			
 			currentEnemies.Add(left);
@@ -53,18 +56,14 @@ public class Spawner : MonoBehaviour
 		}	
 		else
 		{
-			var spawnPosition = new Vector2(0, lastSpawnedPosition);
+			var spawnPosition = new Vector2(-player.position.x, ySpawnPos);
 			var instance = Instantiate(enemyPrefab, spawnPosition, enemyPrefab.transform.rotation, transform);
+			instance.transform.rotation = rotation;
 			instance.EnemyMovementController.Target = player;
 			currentEnemies.Add(instance);
 			
 			instance.Dead += OnEnemyDeadHandler;
 		}
-		
-		isFight = true;
-		cameraController.EnableFreeze();
-		borders.TopBorder.gameObject.SetActive(true);
-		lastSpawnedPosition = 3 * screenSize.y / 4;
 	}
 	
 	private void OnEnemyDeadHandler(EnemyController enemyController)
@@ -74,8 +73,7 @@ public class Spawner : MonoBehaviour
 		
 		if (currentEnemies.Count == 0)
 		{
-			isFight = false;
-			cameraController.DisableFreeze();
+			Spawn();
 		}
 	}
 }

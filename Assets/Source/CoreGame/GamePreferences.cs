@@ -58,4 +58,28 @@ public class GamePreferences
 			isTutorialRequired = true;
 		}
 	}
+	
+	public void IncreasePlayerBank(int bankToAdd)
+	{
+		playerBank += bankToAdd;
+		SavePreferences();
+	}
+	
+	public void SetLevelSave(int value)
+	{
+		playerLevelSave = value;
+		SavePreferences();
+	}
+	
+	public void SetLifesUpgrade(int value)
+	{
+		playerMaximumLifesUpgrades = value;
+		SavePreferences();
+	}
+	
+	public void SetImpulseUpgrade(int value)
+	{
+		playerImpulseUpgrade = value;
+		SavePreferences();
+	}
 }
