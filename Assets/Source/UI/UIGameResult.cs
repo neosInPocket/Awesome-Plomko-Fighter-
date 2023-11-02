@@ -26,6 +26,7 @@ public class UIGameResult : MonoBehaviour
 		{
 			resultText.text = "LOSE";
 			restartButtonText.text = "TRY AGAIN";
+			coinsAmount.text = 0.ToString();
 		}
 		else
 		{

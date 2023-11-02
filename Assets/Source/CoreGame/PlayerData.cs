@@ -22,8 +22,7 @@ public class PlayerData
 	{
 		var save = new GamePreferences();
 		
-		//lifes = save.PlayerMaximumLifesUpgrades;
-		lifes = 2;
+		lifes = save.PlayerMaximumLifesUpgrades;
 		impulseUpgrade = save.PlayerImpulseUpgrade;
 	}
 	

@@ -7,15 +7,17 @@ public class PlayerMovementController : MonoBehaviour
 	[SerializeField] private Rigidbody2D rigid;
 	[SerializeField] private TrajectoryPredictor trajectoryPredictor;
 	[SerializeField] private float timeScale;
-	[SerializeField] private float impulseMagnitude;
+	private float impulseMagnitude;
 	private float defaultDeltaTime;
-	
+	private float[] impulseMagnitudes = { 2.5f, 3f, 3.5f, 4f };
 	
 	private void Start()
 	{
 		EnhancedTouchSupport.Enable();
 		TouchSimulation.Enable();
 		defaultDeltaTime = Time.fixedDeltaTime;
+		var gamePrefs = new GamePreferences();
+		impulseMagnitude = impulseMagnitudes[gamePrefs.PlayerImpulseUpgrade];
 	}
 	
 	public void EnablePlayerControls()

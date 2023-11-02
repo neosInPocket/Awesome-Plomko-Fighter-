@@ -1,6 +1,7 @@
 using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameControlling : MonoBehaviour
 {
@@ -32,10 +33,17 @@ public class GameControlling : MonoBehaviour
 		levelReward = (int)(7 * Mathf.Log(level * level) + 20);
 		currentProgress = 0;
 		
+		InitializePlayer();
+		
+		gameUIController.PlayerDamageHandler(player.Player.Lifes);
+		gameUIController.PlayerEnemyKilledHandler(0);
+		gameUIController.SetLevelText(level);
+		
 		if (gamePreferences.IsTutorialRequired)
 		{
 			gamePreferences.SetTutorialRequired(false);
 			uITutorialScreen.OnTutorialEnded += OnTutorialEndHandler;
+			uITutorialScreen.Show();
 		}
 		else
 		{
@@ -53,12 +61,8 @@ public class GameControlling : MonoBehaviour
 	private void OnCountDownEndedHandler()
 	{
 		uICountDown.CountDownEnded -= OnCountDownEndedHandler;
-		InitializePlayer();
 		
-		gameUIController.PlayerDamageHandler(player.Player.Lifes);
-		gameUIController.PlayerEnemyKilledHandler(0);
-		gameUIController.SetLevelText(level);
-		
+		playerMovementController.EnablePlayerControls();
 		spawner.Enable();
 		spawner.Spawn();
 	}
@@ -67,7 +71,6 @@ public class GameControlling : MonoBehaviour
 	{
 		player.StopAllCoroutines();
 		player.Initialize();
-		playerMovementController.EnablePlayerControls();
 		player.IsInvincible = false;
 		player.transform.position = Vector2.zero;
 		player.TrailRenderer.Clear();
@@ -95,6 +98,7 @@ public class GameControlling : MonoBehaviour
 		{
 			currentProgress = maxProgress;
 			gamePreferences.IncreaseLevelSave();
+			gamePreferences.IncreasePlayerBank(levelReward);
 			DisablePlayer();
 			gameUIController.AppearGameResultScreen(false);
 		}
@@ -124,5 +128,10 @@ public class GameControlling : MonoBehaviour
 	{
 		player.UnSubscribeDamageEvent(PlayerDamageHandler);
 		player.UnSubscribeEnemyKillEvent(PlayerEnemyKilledHandler);
+	}
+	
+	public void LoadMenuScene()
+	{
+		SceneManager.LoadScene("MenuScene");
 	}
 }

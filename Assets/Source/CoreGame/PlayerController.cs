@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
 	{
 		var color = new Color(1, 1, 1, 1);
 		spriteRenderer.color = color;
-		trailRenderer.startColor = color;
+		trailRenderer.startColor = new Color(1, 0.5618984f, 0.4764151f, 1);
 		player = new PlayerData();
 		player.DamageTaken += PlayerDamageTakenHandler;
 		spriteRenderer.enabled = true;
@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour
 				alpha -= 0.05f;
 				color = new Color(1, 1, 1, alpha);
 				spriteRenderer.color = color;
-				trailRenderer.startColor = color;
+				trailRenderer.startColor = new Color(1, 0.5618984f, 0.4764151f, alpha);
 				yield return new WaitForFixedUpdate();
 			}
 			
@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviour
 				alpha += 0.05f;
 				color = new Color(1, 1, 1, alpha);
 				spriteRenderer.color = color;
-				trailRenderer.startColor = color;
+				trailRenderer.startColor = new Color(1, 0.5618984f, 0.4764151f, alpha);
 				yield return new WaitForFixedUpdate();
 			}
 		}

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Properties;
 using UnityEngine;
 
 public class GamePreferences
@@ -15,16 +16,15 @@ public class GamePreferences
 	public int PlayerMaximumLifesUpgrades => playerMaximumLifesUpgrades;
 	public int PlayerBank => playerBank;
 	public bool IsTutorialRequired => isTutorialRequired;
+	public static float MusicVolume;
 	
 	
 	public GamePreferences()
 	{
 		LoadPreferences();
-		playerLevelSave = 1;
-		SavePreferences();
 	}
 	
-	private void SavePreferences()
+	public void SavePreferences()
 	{
 		PlayerPrefs.SetInt("PlayerLevelSave", playerLevelSave);
 		PlayerPrefs.SetInt("PlayerImpulseUpgrade", playerImpulseUpgrade);
@@ -48,6 +48,7 @@ public class GamePreferences
 		playerImpulseUpgrade = PlayerPrefs.GetInt("PlayerImpulseUpgrade", 0);
 		playerMaximumLifesUpgrades = PlayerPrefs.GetInt("PlayerMaximumLifesUpgrades", 1);
 		playerBank = PlayerPrefs.GetInt("PlayerBank", 100);
+		MusicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
 		
 		var isTutor = PlayerPrefs.GetInt("IsTutorialRequired", 1);
 		
@@ -73,15 +74,15 @@ public class GamePreferences
 		SavePreferences();
 	}
 	
-	public void SetLifesUpgrade(int value)
+	public void IncreaseLifesUpgrade()
 	{
-		playerMaximumLifesUpgrades = value;
+		playerMaximumLifesUpgrades++;
 		SavePreferences();
 	}
 	
-	public void SetImpulseUpgrade(int value)
+	public void IncreaseImpulseUpgrade()
 	{
-		playerImpulseUpgrade = value;
+		playerImpulseUpgrade++;
 		SavePreferences();
 	}
 	
@@ -89,5 +90,16 @@ public class GamePreferences
 	{
 		isTutorialRequired = value;
 		SavePreferences();
+	}
+	
+	public void ResetPreferences()
+	{
+		PlayerPrefs.SetInt("PlayerLevelSave", 1);
+		PlayerPrefs.SetInt("PlayerImpulseUpgrade", 0);
+		PlayerPrefs.SetInt("PlayerMaximumLifesUpgrades", 1);
+		PlayerPrefs.SetInt("PlayerBank", 100);
+		PlayerPrefs.SetInt("IsTutorialRequired", 1);
+		PlayerPrefs.SetFloat("MusicVolume", 1f);
+		LoadPreferences();
 	}
 }
