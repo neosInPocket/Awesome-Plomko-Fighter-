@@ -3619,7 +3619,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mask: {fileID: 1655673126}
-  trajectorySpeed: 0.02
+  trajectorySpeed: 50
   CurrentDirection: {x: 0, y: 0}
 --- !u!1 &1320090879
 GameObject:

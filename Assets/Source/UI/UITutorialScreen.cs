@@ -23,7 +23,7 @@ public class UITutorialScreen : MonoBehaviour
 	public void Show()
 	{
 		gameObject.SetActive(true);
-		characterText.text = "Welcome to Spacing!";
+		characterText.text = "Welcome to Awesome Plomko Fighter!";
 	}
 	
 	public void Hide()

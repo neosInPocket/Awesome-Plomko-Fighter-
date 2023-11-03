@@ -45,7 +45,7 @@ public class TrajectoryPredictor : MonoBehaviour
 			if (currentDirectionMultiplier == -1 && maskDistance > trajectoryLength) return;
 			
 			currentDirectionMultiplier = -1;
-			mask.transform.Translate(-transform.right * (trajectoryLength - distance) * trajectorySpeed, Space.World);
+			mask.transform.Translate(-transform.right * (trajectoryLength - distance) * trajectorySpeed * Time.deltaTime, Space.World);
 		}
 		
 		if (distance > maxDistance)
@@ -53,7 +53,7 @@ public class TrajectoryPredictor : MonoBehaviour
 			if (currentDirectionMultiplier == 1 && maskDistance > trajectoryLength) return;
 			
 			currentDirectionMultiplier = 1;
-			mask.transform.Translate(transform.right * distance * trajectorySpeed, Space.World);
+			mask.transform.Translate(transform.right * distance * trajectorySpeed * Time.deltaTime, Space.World);
 		}
 		maxDistance = distance;
 	}
